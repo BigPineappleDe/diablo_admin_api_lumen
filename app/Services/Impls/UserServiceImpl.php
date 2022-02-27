@@ -24,6 +24,6 @@ class UserServiceImpl extends ServiceUtil implements UserService
     public function doLogin()
     {
         $param = $this->request->all();
-        dump( $param );
+        dump($param);
     }
 }
