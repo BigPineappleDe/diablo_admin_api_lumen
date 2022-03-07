@@ -33,6 +33,8 @@ class UserMessage
                 'account' => '账号',
                 'password' => '密码',
             ],
+            "accountIsNull" => "账号不存在！！！",
+            "accountStateErr" => "账号已被禁用！！！",
         ],
     ];
 }

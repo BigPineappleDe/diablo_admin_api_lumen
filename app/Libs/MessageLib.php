@@ -22,9 +22,7 @@ class MessageLib
 {
     public function __construct(
         public Request $request,
-    )
-    {
-    }
+    ){}
 
     //表单验证器
     public function search($data)
