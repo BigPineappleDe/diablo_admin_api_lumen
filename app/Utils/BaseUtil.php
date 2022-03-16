@@ -15,7 +15,19 @@ declare(strict_types=1);
 namespace App\Utils;
 
 
+use App\Constants\SystemConstant;
+use Illuminate\Http\Request;
+
 class BaseUtil
 {
+    public function __construct(
+        public Request $request
+    )
+    {}
 
+    //获取语言
+    public function getLanguage()
+    {
+        return $this->request->header(SystemConstant::LAN_HEADER_KEY);
+    }
 }

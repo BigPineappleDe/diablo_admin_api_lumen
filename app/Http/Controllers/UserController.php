@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 
+use App\Constants\UserConstant;
 use App\Libs\MessageLib;
-use App\Messages\UserMessage;
 use App\Services\Impls\UserServiceImpl;
 
 class UserController
@@ -24,13 +24,14 @@ class UserController
     public function __construct(
         public MessageLib $messageLib,
         public UserServiceImpl $userService,
-    )
-    {}
+    ){}
+
+    private const FILE_NAME = UserConstant::USER_FILE_NAME;
 
     //登录
     public function doLogin()
     {
-        $this->messageLib->search(UserMessage::DO_LOGIN);
+        $this->messageLib->search(self::FILE_NAME, __FUNCTION__);
         return $this->userService->doLogin();
     }
 }

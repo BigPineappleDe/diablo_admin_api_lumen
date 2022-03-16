@@ -15,21 +15,37 @@ declare(strict_types=1);
 namespace App\Libs;
 
 
+use App\Utils\BaseUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Validator;
 
 class MessageLib
 {
     public function __construct(
         public Request $request,
-    ){}
+        public BaseUtil $baseUtil,
+    )
+    {
+    }
 
     //表单验证器
-    public function search($data)
+    public function search(...$str)
     {
-        $language = self::getRequestLanguage();
-        if ($language == 'null') $language = 'zh-cn';
-        self::makeErrorMsg($this->request->all(), $data['request'], $data[$language]['message'], $data[$language]['attribute']);
+        $data = self::getMessage(...$str);
+        self::makeErrorMsg($this->request->all(), $data['request'], $data['message'], $data['attribute']);
+    }
+
+    //根据Key获取响应信息
+    public function getMessage(...$str)
+    {
+        $data = $str;
+        $loadData = Lang::get($data[0], [], self::getRequestLanguage());
+        unset($data[0]);
+        foreach ($data as $item) {
+            $loadData = $loadData[$item];
+        }
+        return $loadData;
     }
 
     //错误捕获
@@ -45,15 +61,8 @@ class MessageLib
         }
     }
 
-    //根据Key获取响应信息
-    public function getMessage($data, $key)
-    {
-        return $data[self::getRequestLanguage()][$key];
-    }
-
-    //获取请求语言
     private function getRequestLanguage()
     {
-        return $this->request->header('Language') ?: 'zh-cn';
+        return $this->baseUtil->getLanguage();
     }
 }
